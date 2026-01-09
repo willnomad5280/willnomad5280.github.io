@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial Intelligence - Nomad</title>
+  <style>
+    :root {
+      --nomad-green: #16a085;
+      --nomad-green-dark: #0e6655;
+      --bg-gray: #f5f5f5;
+      --sidebar-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --border-light: #e0e0e0;
+      --link-blue: #0066cc;
+      --warning-orange: #f59e0b;
+      --success-green: #10b981;
+      --error-red: #ef4444;
+      --ai-blue: #3b82f6;
+      --ai-purple: #8b5cf6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-gray);
+      margin: 0;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      border-bottom: 3px solid var(--nomad-green);
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--nomad-green);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ai-badge {
+      background: linear-gradient(135deg, var(--ai-blue) 0%, var(--ai-purple) 100%);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .property-address {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .user-menu:hover {
+      background: var(--bg-gray);
+    }
+
+    /* AI Banner */
+    .ai-banner {
+      background: linear-gradient(135deg, var(--ai-blue) 0%, var(--ai-purple) 100%);
+      color: white;
+      padding: 12px 24px;
+      text-align: center;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .ai-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ai-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Layout */
+    .layout {
+      display: flex;
+      max-width: 1400px;
+      margin: 0 auto;
+      min-height: calc(100vh - 70px);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border-light);
+      padding: 20px 0;
+    }
+
+    .sidebar-section {
+      margin-bottom: 32px;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+      padding: 0 20px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 20px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .sidebar-link:hover {
+      background: var(--bg-gray);
+    }
+
+    .sidebar-link.active {
+      background: #e8f5f2;
+      color: var(--nomad-green);
+      border-right: 3px solid var(--nomad-green);
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .page-title {
+      font-size: 32px;
+      font-weight: 300;
+      margin: 0;
+      color: var(--text-primary);
+    }
+
+    .date-range-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* AI Insights Panel */
+    .ai-insights {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .insights-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .insights-title {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .insight-card {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .insight-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .insight-priority {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--error-red);
+    }
+
+    .insight-priority.medium {
+      background: var(--warning-orange);
+    }
+
+    .insight-priority.low {
+      background: var(--ai-blue);
+    }
+
+    .insight-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .insight-value {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .insight-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .insight-action {
+      font-size: 13px;
+      color: var(--link-blue);
+      font-weight: 500;
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .metric-card {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s;
+    }
+
+    .metric-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .metric-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+    }
+
+    .metric-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .metric-change {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 14px;
+    }
+
+    .change-positive {
+      color: var(--success-green);
+    }
+
+    .change-negative {
+      color: var(--error-red);
+    }
+
+    /* Charts Section */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .chart-card {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .chart-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 16px;
+      font-size: 13px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    /* Revenue Chart */
+    .revenue-chart {
+      height: 200px;
+      position: relative;
+      background: var(--bg-gray);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      height: 160px;
+      gap: 12px;
+    }
+
+    .bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bar {
+      width: 100%;
+      background: var(--ai-purple);
+      border-radius: 4px 4px 0 0;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .bar:hover {
+      opacity: 0.8;
+    }
+
+    .bar-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Properties Table */
+    .table-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 24px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-gray);
+    }
+
+    td {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+    }
+
+    tr:hover {
+      background: #fafafa;
+    }
+
+    .property-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .property-address {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .performance-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .performance-up {
+      background: #d1fae5;
+      color: var(--success-green);
+    }
+
+    .performance-down {
+      background: #fee2e2;
+      color: var(--error-red);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .insights-grid {
+        grid-template-columns: 1fr;
+      }
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .layout {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="#" class="logo">
+        NOMAD
+        <span class="ai-badge">AI</span>
+      </a>
+      <div class="header-right">
+        <span class="property-address">Portfolio Overview</span>
+        <div class="user-menu">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" stroke="#666" stroke-width="2"/>
+            <circle cx="8" cy="8" r="3" stroke="#666" stroke-width="2"/>
+            <path d="M5 17a5 5 0 0110 0" stroke="#666" stroke-width="2"/>
+          </svg>
+          <span>Hi Sarah! ⌄</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- AI Banner -->
+  <div class="ai-banner">
+    <span>✨ AI-Powered insights are analyzing your portfolio in real-time</span>
+    <div class="ai-toggle">
+      <span>AI Insights: ON</span>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">OVERVIEW</div>
+        <a href="#" class="sidebar-link active">
+          <span>📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span>🏠</span>
+          <span>Properties</span>
+        </a>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-label">FINANCIALS</div>
+        <a href="#" class="sidebar-link">
+          <span>💰</span>
+          <span>Income</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span>📉</span>
+          <span>Expenses</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span>🏦</span>
+          <span>Banking</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span>📋</span>
+          <span>Reports</span>
+        </a>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-label">INTELLIGENCE</div>
+        <a href="#" class="sidebar-link">
+          <span>🎯</span>
+          <span>Optimization</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span>📈</span>
+          <span>Market Analysis</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span>🔮</span>
+          <span>Predictions</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="page-header">
+        <h1 class="page-title">Financial Intelligence Dashboard</h1>
+        <div class="date-range-selector">
+          📅 <span>Last 12 months</span> ⌄
+        </div>
+      </div>
+
+      <!-- AI Insights Panel -->
+      <div class="ai-insights">
+        <div class="insights-header">
+          <h2 class="insights-title">
+            ✨ AI-Powered Insights
+          </h2>
+          <a href="#" style="font-size: 14px; color: var(--link-blue); text-decoration: none;">View all →</a>
+        </div>
+        
+        <div class="insights-grid">
+          <div class="insight-card">
+            <div class="insight-priority"></div>
+            <div class="insight-icon">💸</div>
+            <div class="insight-value">$12,400</div>
+            <div class="insight-label">Revenue opportunity identified</div>
+            <div class="insight-action">Optimize pricing →</div>
+          </div>
+          
+          <div class="insight-card">
+            <div class="insight-priority medium"></div>
+            <div class="insight-icon">🔧</div>
+            <div class="insight-value">-$3,200</div>
+            <div class="insight-label">Reduce maintenance costs</div>
+            <div class="insight-action">View suggestions →</div>
+          </div>
+          
+          <div class="insight-card">
+            <div class="insight-priority low"></div>
+            <div class="insight-icon">📊</div>
+            <div class="insight-value">18.5%</div>
+            <div class="insight-label">Above market average</div>
+            <div class="insight-action">See comparison →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-header">
+            <div>
+              <div class="metric-title">Total Revenue</div>
+              <div class="metric-value">$342,500</div>
+              <div class="metric-change change-positive">
+                ↑ 12.3% vs last year
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="metric-card">
+          <div class="metric-header">
+            <div>
+              <div class="metric-title">Net Operating Income</div>
+              <div class="metric-value">$198,420</div>
+              <div class="metric-change change-positive">
+                ↑ 8.7% vs last year
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="metric-card">
+          <div class="metric-header">
+            <div>
+              <div class="metric-title">Occupancy Rate</div>
+              <div class="metric-value">96.5%</div>
+              <div class="metric-change change-positive">
+                ↑ 2.1% vs market
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="metric-card">
+          <div class="metric-header">
+            <div>
+              <div class="metric-title">Cash-on-Cash Return</div>
+              <div class="metric-value">9.2%</div>
+              <div class="metric-change change-positive">
+                ↑ 1.4% improvement
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3 class="chart-title">Revenue Optimization Analysis</h3>
+            <div class="chart-legend">
+              <div class="legend-item">
+                <div class="legend-dot" style="background: var(--ai-purple)"></div>
+                <span>Current</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background: var(--success-green)"></div>
+                <span>Optimized</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="revenue-chart">
+            <div class="chart-bars">
+              <div class="bar-group">
+                <div class="bar" style="height: 70%; background: var(--ai-purple)"></div>
+                <div class="bar-label">Jan</div>
+              </div>
+              <div class="bar-group">
+                <div class="bar" style="height: 75%; background: var(--ai-purple)"></div>
+                <div class="bar-label">Feb</div>
+              </div>
+              <div class="bar-group">
+                <div class="bar" style="height: 82%; background: var(--ai-purple)"></div>
+                <div class="bar-label">Mar</div>
+              </div>
+              <div class="bar-group">
+                <div class="bar" style="height: 78%; background: var(--ai-purple)"></div>
+                <div class="bar-label">Apr</div>
+              </div>
+              <div class="bar-group">
+                <div class="bar" style="height: 85%; background: var(--ai-purple)"></div>
+                <div class="bar-label">May</div>
+              </div>
+              <div class="bar-group">
+                <div class="bar" style="height: 88%; background: var(--ai-purple)"></div>
+                <div class="bar-label">Jun</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3 class="chart-title">Market Position</h3>
+          </div>
+          
+          <div style="text-align: center; padding: 40px 0;">
+            <div style="font-size: 48px; font-weight: 700; color: var(--nomad-green);">A+</div>
+            <div style="font-size: 16px; color: var(--text-secondary); margin-top: 8px;">Market Performance Score</div>
+            <div style="font-size: 14px; color: var(--text-secondary); margin-top: 16px;">Top 15% in your area</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Properties Performance Table -->
+      <div class="table-card">
+        <div class="table-header">
+          <h3 class="table-title">Property Performance</h3>
+          <a href="#" style="font-size: 14px; color: var(--link-blue); text-decoration: none;">View all properties →</a>
+        </div>
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Monthly Revenue</th>
+              <th>Occupancy</th>
+              <th>NOI</th>
+              <th>Performance</th>
+              <th>AI Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="property-name">456 Maple Ave</div>
+                <div class="property-address">Austin, TX 78701</div>
+              </td>
+              <td>$2,850</td>
+              <td>100%</td>
+              <td>$2,140</td>
+              <td><span class="performance-badge performance-up">↑ 12%</span></td>
+              <td>92/100</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="property-name">789 Oak Street</div>
+                <div class="property-address">Austin, TX 78702</div>
+              </td>
+              <td>$3,200</td>
+              <td>100%</td>
+              <td>$2,480</td>
+              <td><span class="performance-badge performance-up">↑ 8%</span></td>
+              <td>88/100</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="property-name">321 Pine Road</div>
+                <div class="property-address">Austin, TX 78703</div>
+              </td>
+              <td>$2,650</td>
+              <td>Vacant</td>
+              <td>-$180</td>
+              <td><span class="performance-badge performance-down">↓ 5%</span></td>
+              <td>74/100</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="property-name">654 Elm Court</div>
+                <div class="property-address">Austin, TX 78704</div>
+              </td>
+              <td>$2,950</td>
+              <td>100%</td>
+              <td>$2,210</td>
+              <td><span class="performance-badge performance-up">↑ 15%</span></td>
+              <td>95/100</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
