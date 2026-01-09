@@ -420,12 +420,15 @@
       gap: 8px;
     }
 
-    .bar {
+    .bar-container {
       width: 100%;
-      background: var(--ai-purple);
+      position: relative;
+      height: 100%;
+    }
+
+    .bar {
       border-radius: 4px 4px 0 0;
       transition: all 0.3s;
-      position: relative;
     }
 
     .bar:hover {
@@ -748,27 +751,45 @@
           <div class="revenue-chart">
             <div class="chart-bars">
               <div class="bar-group">
-                <div class="bar" style="height: 70%; background: var(--ai-purple)"></div>
+                <div class="bar-container" style="height: 100%; position: relative;">
+                  <div class="bar" style="height: 70%; background: var(--ai-purple); position: absolute; bottom: 0; width: 40%; left: 10%;"></div>
+                  <div class="bar" style="height: 85%; background: var(--success-green); opacity: 0.7; position: absolute; bottom: 0; width: 40%; right: 10%;"></div>
+                </div>
                 <div class="bar-label">Jan</div>
               </div>
               <div class="bar-group">
-                <div class="bar" style="height: 75%; background: var(--ai-purple)"></div>
+                <div class="bar-container" style="height: 100%; position: relative;">
+                  <div class="bar" style="height: 75%; background: var(--ai-purple); position: absolute; bottom: 0; width: 40%; left: 10%;"></div>
+                  <div class="bar" style="height: 88%; background: var(--success-green); opacity: 0.7; position: absolute; bottom: 0; width: 40%; right: 10%;"></div>
+                </div>
                 <div class="bar-label">Feb</div>
               </div>
               <div class="bar-group">
-                <div class="bar" style="height: 82%; background: var(--ai-purple)"></div>
+                <div class="bar-container" style="height: 100%; position: relative;">
+                  <div class="bar" style="height: 82%; background: var(--ai-purple); position: absolute; bottom: 0; width: 40%; left: 10%;"></div>
+                  <div class="bar" style="height: 90%; background: var(--success-green); opacity: 0.7; position: absolute; bottom: 0; width: 40%; right: 10%;"></div>
+                </div>
                 <div class="bar-label">Mar</div>
               </div>
               <div class="bar-group">
-                <div class="bar" style="height: 78%; background: var(--ai-purple)"></div>
+                <div class="bar-container" style="height: 100%; position: relative;">
+                  <div class="bar" style="height: 78%; background: var(--ai-purple); position: absolute; bottom: 0; width: 40%; left: 10%;"></div>
+                  <div class="bar" style="height: 92%; background: var(--success-green); opacity: 0.7; position: absolute; bottom: 0; width: 40%; right: 10%;"></div>
+                </div>
                 <div class="bar-label">Apr</div>
               </div>
               <div class="bar-group">
-                <div class="bar" style="height: 85%; background: var(--ai-purple)"></div>
+                <div class="bar-container" style="height: 100%; position: relative;">
+                  <div class="bar" style="height: 85%; background: var(--ai-purple); position: absolute; bottom: 0; width: 40%; left: 10%;"></div>
+                  <div class="bar" style="height: 94%; background: var(--success-green); opacity: 0.7; position: absolute; bottom: 0; width: 40%; right: 10%;"></div>
+                </div>
                 <div class="bar-label">May</div>
               </div>
               <div class="bar-group">
-                <div class="bar" style="height: 88%; background: var(--ai-purple)"></div>
+                <div class="bar-container" style="height: 100%; position: relative;">
+                  <div class="bar" style="height: 88%; background: var(--ai-purple); position: absolute; bottom: 0; width: 40%; left: 10%;"></div>
+                  <div class="bar" style="height: 96%; background: var(--success-green); opacity: 0.7; position: absolute; bottom: 0; width: 40%; right: 10%;"></div>
+                </div>
                 <div class="bar-label">Jun</div>
               </div>
             </div>
