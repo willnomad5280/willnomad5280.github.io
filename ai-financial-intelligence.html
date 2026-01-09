@@ -397,56 +397,13 @@
 
     /* Revenue Chart */
     .revenue-chart {
-      height: 240px;
-      position: relative;
       background: var(--bg-gray);
       border-radius: 8px;
       padding: 20px;
     }
 
-    .chart-bars {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      height: 180px;
-      gap: 16px;
-      padding: 0 10px;
-    }
-
-    .bar-group {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      height: 100%;
-    }
-
-    .bar-container {
-      width: 100%;
-      height: 160px;
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .bar {
-      width: 35%;
-      border-radius: 4px 4px 0 0;
-      transition: all 0.3s;
-      position: relative;
-    }
-
-    .bar:hover {
-      opacity: 0.8;
-    }
-
-    .bar-label {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-top: 8px;
+    .revenue-chart svg {
+      display: block;
     }
 
     /* Properties Table */
@@ -758,50 +715,48 @@
           </div>
           
           <div class="revenue-chart">
-            <div class="chart-bars">
-              <div class="bar-group">
-                <div class="bar-container">
-                  <div class="bar" style="height: 70%; background: var(--ai-purple);"></div>
-                  <div class="bar" style="height: 85%; background: var(--success-green);"></div>
-                </div>
-                <div class="bar-label">Jan</div>
-              </div>
-              <div class="bar-group">
-                <div class="bar-container">
-                  <div class="bar" style="height: 75%; background: var(--ai-purple);"></div>
-                  <div class="bar" style="height: 88%; background: var(--success-green);"></div>
-                </div>
-                <div class="bar-label">Feb</div>
-              </div>
-              <div class="bar-group">
-                <div class="bar-container">
-                  <div class="bar" style="height: 82%; background: var(--ai-purple);"></div>
-                  <div class="bar" style="height: 90%; background: var(--success-green);"></div>
-                </div>
-                <div class="bar-label">Mar</div>
-              </div>
-              <div class="bar-group">
-                <div class="bar-container">
-                  <div class="bar" style="height: 78%; background: var(--ai-purple);"></div>
-                  <div class="bar" style="height: 92%; background: var(--success-green);"></div>
-                </div>
-                <div class="bar-label">Apr</div>
-              </div>
-              <div class="bar-group">
-                <div class="bar-container">
-                  <div class="bar" style="height: 85%; background: var(--ai-purple);"></div>
-                  <div class="bar" style="height: 94%; background: var(--success-green);"></div>
-                </div>
-                <div class="bar-label">May</div>
-              </div>
-              <div class="bar-group">
-                <div class="bar-container">
-                  <div class="bar" style="height: 88%; background: var(--ai-purple);"></div>
-                  <div class="bar" style="height: 96%; background: var(--success-green);"></div>
-                </div>
-                <div class="bar-label">Jun</div>
-              </div>
-            </div>
+            <svg width="100%" height="180" viewBox="0 0 500 180">
+              <!-- Grid lines -->
+              <line x1="40" y1="20" x2="40" y2="140" stroke="#e5e7eb" stroke-width="1"/>
+              <line x1="40" y1="140" x2="480" y2="140" stroke="#e5e7eb" stroke-width="1"/>
+              
+              <!-- Y-axis labels -->
+              <text x="30" y="25" font-size="11" fill="#666" text-anchor="end">$3k</text>
+              <text x="30" y="65" font-size="11" fill="#666" text-anchor="end">$2k</text>
+              <text x="30" y="105" font-size="11" fill="#666" text-anchor="end">$1k</text>
+              <text x="30" y="145" font-size="11" fill="#666" text-anchor="end">$0</text>
+              
+              <!-- Bars -->
+              <!-- Jan -->
+              <rect x="60" y="58" width="25" height="82" fill="#8b5cf6" rx="2"/>
+              <rect x="90" y="35" width="25" height="105" fill="#10b981" rx="2"/>
+              <text x="87.5" y="160" font-size="12" fill="#666" text-anchor="middle">Jan</text>
+              
+              <!-- Feb -->
+              <rect x="135" y="52" width="25" height="88" fill="#8b5cf6" rx="2"/>
+              <rect x="165" y="30" width="25" height="110" fill="#10b981" rx="2"/>
+              <text x="162.5" y="160" font-size="12" fill="#666" text-anchor="middle">Feb</text>
+              
+              <!-- Mar -->
+              <rect x="210" y="42" width="25" height="98" fill="#8b5cf6" rx="2"/>
+              <rect x="240" y="26" width="25" height="114" fill="#10b981" rx="2"/>
+              <text x="237.5" y="160" font-size="12" fill="#666" text-anchor="middle">Mar</text>
+              
+              <!-- Apr -->
+              <rect x="285" y="48" width="25" height="92" fill="#8b5cf6" rx="2"/>
+              <rect x="315" y="22" width="25" height="118" fill="#10b981" rx="2"/>
+              <text x="312.5" y="160" font-size="12" fill="#666" text-anchor="middle">Apr</text>
+              
+              <!-- May -->
+              <rect x="360" y="35" width="25" height="105" fill="#8b5cf6" rx="2"/>
+              <rect x="390" y="18" width="25" height="122" fill="#10b981" rx="2"/>
+              <text x="387.5" y="160" font-size="12" fill="#666" text-anchor="middle">May</text>
+              
+              <!-- Jun -->
+              <rect x="435" y="30" width="25" height="110" fill="#8b5cf6" rx="2"/>
+              <rect x="465" y="14" width="25" height="126" fill="#10b981" rx="2"/>
+              <text x="462.5" y="160" font-size="12" fill="#666" text-anchor="middle">Jun</text>
+            </svg>
           </div>
         </div>
         
