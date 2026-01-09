@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eviction Packet - Nomad</title>
+  <style>
+    :root {
+      --nomad-green: #16a085;
+      --nomad-green-dark: #0e6655;
+      --bg-gray: #f5f5f5;
+      --sidebar-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --border-light: #e0e0e0;
+      --link-blue: #0066cc;
+      --warning-orange: #ff6b35;
+      --success-green: #27ae60;
+      --error-red: #e74c3c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-gray);
+      margin: 0;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      border-bottom: 3px solid var(--nomad-green);
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--nomad-green);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .property-address {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .user-menu:hover {
+      background: var(--bg-gray);
+    }
+
+    /* Getting Started Banner */
+    .banner {
+      background: var(--nomad-green);
+      color: white;
+      padding: 12px 24px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .banner a {
+      color: white;
+      font-weight: 600;
+    }
+
+    .banner .close {
+      float: right;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+
+    /* Layout */
+    .layout {
+      display: flex;
+      max-width: 1400px;
+      margin: 0 auto;
+      min-height: calc(100vh - 70px);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border-light);
+      padding: 20px 0;
+    }
+
+    .sidebar-section {
+      margin-bottom: 32px;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+      padding: 0 20px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 20px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .sidebar-link:hover {
+      background: var(--bg-gray);
+    }
+
+    .sidebar-link.active {
+      background: #e8f5f2;
+      color: var(--nomad-green);
+      border-right: 3px solid var(--nomad-green);
+    }
+
+    .sidebar-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    .page-title {
+      font-size: 32px;
+      font-weight: 300;
+      margin: 0 0 32px 0;
+      color: var(--text-primary);
+    }
+
+    /* Property Card */
+    .property-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .property-header {
+      display: flex;
+      gap: 24px;
+      padding: 24px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .property-image {
+      width: 200px;
+      height: 150px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .property-details {
+      flex: 1;
+    }
+
+    .property-status {
+      display: inline-block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .property-status.delinquent {
+      color: var(--error-red);
+    }
+
+    .property-price {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .property-address-main {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .property-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .action-button {
+      background: var(--nomad-green);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .action-button:hover {
+      background: var(--nomad-green-dark);
+    }
+
+    .action-button.secondary {
+      background: white;
+      color: var(--nomad-green);
+      border: 2px solid var(--nomad-green);
+    }
+
+    .action-button.secondary:hover {
+      background: #f0f8f6;
+    }
+
+    /* Sections */
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .improvements-count {
+      color: var(--warning-orange);
+      font-size: 14px;
+    }
+
+    .edit-link {
+      color: var(--link-blue);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .edit-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Status Alert */
+    .status-alert {
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .status-alert.error {
+      background: #f8d7da;
+      border-color: #f5c6cb;
+    }
+
+    .status-alert.success {
+      background: #d4edda;
+      border-color: #c3e6cb;
+    }
+
+    .status-icon {
+      font-size: 24px;
+    }
+
+    .status-content {
+      flex: 1;
+    }
+
+    .status-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .status-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* Document List */
+    .document-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .document-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .document-item:last-child {
+      border-bottom: none;
+    }
+
+    .document-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .document-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--bg-gray);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .document-icon.complete {
+      background: #d4edda;
+      color: var(--success-green);
+    }
+
+    .document-icon.warning {
+      background: #fff3cd;
+      color: var(--warning-orange);
+    }
+
+    .document-name {
+      font-weight: 500;
+    }
+
+    .document-status {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Help Section */
+    .help-section {
+      background: #f0f8f6;
+      border: 1px solid #c3e6cb;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 24px;
+    }
+
+    .help-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .help-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .contact-button {
+      background: var(--nomad-green);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 8px;
+      width: 500px;
+      max-width: 90%;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .modal-content {
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--nomad-green);
+    }
+
+    .form-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    /* Share Link Box */
+    .share-box {
+      background: var(--bg-gray);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .share-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .share-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--success-green);
+    }
+
+    .share-link {
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 13px;
+      word-break: break-all;
+      margin-bottom: 12px;
+    }
+
+    .share-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    /* Activity Log */
+    .activity-log {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .activity-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-time {
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .activity-text {
+      flex: 1;
+    }
+
+    /* Preview */
+    .preview-container {
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f9f9f9;
+    }
+
+    .preview-header {
+      background: white;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .preview-body {
+      padding: 20px;
+      min-height: 200px;
+      position: relative;
+    }
+
+    .watermark {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 700;
+      color: rgba(0,0,0,0.1);
+      transform: rotate(-20deg);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .preview-container.watermarked .watermark {
+      display: flex;
+    }
+
+    /* Grid Layout */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .layout {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+      }
+      
+      .property-header {
+        flex-direction: column;
+      }
+      
+      .property-image {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="#" class="logo">NOMAD</a>
+      <div class="header-right">
+        <span class="property-address">123 Oak Street, Austin, TX</span>
+        <div class="user-menu">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" stroke="#666" stroke-width="2"/>
+            <circle cx="10" cy="8" r="3" stroke="#666" stroke-width="2"/>
+            <path d="M5 17a5 5 0 0110 0" stroke="#666" stroke-width="2"/>
+          </svg>
+          <span>Hi Sarah! ⌄</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Getting Started Banner -->
+  <div class="banner" id="banner">
+    Learn how to use your portal to find a resident. <a href="#">Getting Started Guide</a>
+    <span class="close" onclick="document.getElementById('banner').style.display='none'">✕</span>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">USER</div>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🏠</span>
+          <span>Home</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">👤</span>
+          <span>Profile</span>
+        </a>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-label">LEASE</div>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">📋</span>
+          <span>My Listing</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🔍</span>
+          <span>Find Resident</span>
+        </a>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-label">MANAGE</div>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">💰</span>
+          <span>Earnings</span>
+        </a>
+        <a href="#" class="sidebar-link" style="background: var(--bg-gray);">
+          <span class="sidebar-icon">📄</span>
+          <span>Documents</span>
+        </a>
+        <div style="padding-left: 32px;">
+          <a href="#" class="sidebar-link" style="font-size: 13px; padding: 6px 20px;">
+            <span>Lease Agreement</span>
+          </a>
+          <a href="#" class="sidebar-link" style="font-size: 13px; padding: 6px 20px;">
+            <span>Notices</span>
+          </a>
+          <a href="#" class="sidebar-link active" style="font-size: 13px; padding: 6px 20px;">
+            <span>Eviction Packet</span>
+          </a>
+          <a href="#" class="sidebar-link" style="font-size: 13px; padding: 6px 20px;">
+            <span>Tax Documents</span>
+          </a>
+        </div>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🔧</span>
+          <span>Repairs</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">➕</span>
+          <span>Add Property</span>
+        </a>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-label">RESOURCES</div>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">💳</span>
+          <span>Buy / Sell</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">💵</span>
+          <span>Rent Advance</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🛡️</span>
+          <span>Protection Plan</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🎁</span>
+          <span>Refer</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">❓</span>
+          <span>Help</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+      <h1 class="page-title">Eviction Packet</h1>
+
+      <!-- Legal Disclaimer -->
+      <div style="background: #f0f4ff; border: 1px solid #d0d9ff; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 16px;">
+        <div style="font-size: 24px; color: #5570d8;">ⓘ</div>
+        <div style="flex: 1;">
+          <div style="font-weight: 600; margin-bottom: 4px; color: #374151;">Legal Disclaimer</div>
+          <div style="font-size: 14px; color: #4b5563;">
+            This eviction packet generator provides general guidance only and does not constitute legal advice. Eviction laws vary significantly by jurisdiction. We strongly recommend consulting with a qualified attorney in your area before proceeding with any eviction action. Nomad is not responsible for any outcomes resulting from the use of these documents.
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Card -->
+      <div class="property-card">
+        <div class="property-header">
+          <img src="data:image/svg+xml,%3Csvg width='200' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='150' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999'%3EProperty Image%3C/text%3E%3C/svg%3E" alt="Property" class="property-image">
+          <div class="property-details">
+            <div class="property-status delinquent">DELINQUENT</div>
+            <div class="property-price">$2,250 <span style="font-size: 16px; font-weight: normal;">/mo</span></div>
+            <div class="property-address-main">123 Oak Street, Austin, TX 78701</div>
+            <div class="property-meta">
+              <span><strong>3</strong> bed | <strong>2.5</strong> bath | <strong>1,850</strong> sq ft</span>
+              <span style="margin-left: 16px;">Tenant: <strong>Michael Thompson</strong></span>
+            </div>
+          </div>
+          <div>
+            <button class="action-button">Generate Eviction Packet</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Alert -->
+      <div class="status-alert error">
+        <div class="status-icon">⚠️</div>
+        <div class="status-content">
+          <div class="status-title">Action Required: Complete Notice Service</div>
+          <div class="status-description">You must serve required notices before filing for eviction. Review the checklist below.</div>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Left Column -->
+        <div>
+          <!-- Document Checklist -->
+          <div class="section">
+            <div class="section-header">
+              <h2 class="section-title">Document Checklist</h2>
+              <span class="improvements-count">2 improvements needed</span>
+            </div>
+            
+            <ul class="document-list">
+              <li class="document-item">
+                <div class="document-info">
+                  <div class="document-icon complete">✓</div>
+                  <div>
+                    <div class="document-name">Executed Lease Agreement</div>
+                    <div class="document-status">Signed on Jan 13, 2026</div>
+                  </div>
+                </div>
+                <a href="#" class="edit-link">View</a>
+              </li>
+              
+              <li class="document-item">
+                <div class="document-info">
+                  <div class="document-icon complete">✓</div>
+                  <div>
+                    <div class="document-name">Rent Ledger</div>
+                    <div class="document-status">Balance: $4,500 (2 months)</div>
+                  </div>
+                </div>
+                <a href="#" class="edit-link">Edit</a>
+              </li>
+              
+              <li class="document-item">
+                <div class="document-info">
+                  <div class="document-icon warning">!</div>
+                  <div>
+                    <div class="document-name">3-Day Pay or Quit Notice</div>
+                    <div class="document-status">Not yet served</div>
+                  </div>
+                </div>
+                <a href="#" class="edit-link">Generate</a>
+              </li>
+              
+              <li class="document-item">
+                <div class="document-info">
+                  <div class="document-icon warning">!</div>
+                  <div>
+                    <div class="document-name">Proof of Service</div>
+                    <div class="document-status">Required after notice service</div>
+                  </div>
+                </div>
+                <span style="color: #999; font-size: 14px;">Pending</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Actions Section -->
+          <div class="section">
+            <h2 class="section-title">Actions</h2>
+            
+            <div style="margin-bottom: 20px;">
+              <h3 style="font-size: 16px; margin-bottom: 12px;">Sensitive Information</h3>
+              <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">
+                Some courts require tenant SSN for filing. Access to this data is logged for security.
+              </p>
+              <button class="action-button secondary" onclick="openSSNModal()">
+                Request Last 4 of SSN
+              </button>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">
+                SSN data is never displayed inline, only included in the secure packet.
+              </p>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+              <h3 style="font-size: 16px; margin-bottom: 12px;">Download Packet</h3>
+              <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">
+                Generate a complete eviction packet with all available documents.
+              </p>
+              <button class="action-button" onclick="downloadPacket()" id="downloadBtn">
+                Download Eviction Packet
+              </button>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">
+                Last generated: Never
+              </p>
+            </div>
+
+            <div>
+              <h3 style="font-size: 16px; margin-bottom: 12px;">Share with Attorney</h3>
+              <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">
+                Create a secure, time-limited link for your eviction attorney.
+              </p>
+              <button class="action-button secondary" onclick="openShareModal()">
+                Share with Attorney
+              </button>
+            </div>
+
+            <!-- Share State (hidden by default) -->
+            <div class="share-box" id="shareState" style="display: none;">
+              <div class="share-header">
+                <div class="share-status">
+                  <span style="color: var(--success-green);">●</span>
+                  Attorney access active
+                </div>
+                <span style="font-size: 14px; color: var(--text-secondary);">
+                  Expires in <span id="shareTimer">48:00:00</span>
+                </span>
+              </div>
+              <div class="share-link" id="shareLink">—</div>
+              <div class="share-actions">
+                <button class="action-button secondary" onclick="copyLink()">Copy Link</button>
+                <button class="action-button secondary" onclick="revokeAccess()" style="background: #fee; color: var(--error-red); border-color: var(--error-red);">
+                  Revoke Access
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div>
+          <!-- Preview Section -->
+          <div class="section">
+            <h2 class="section-title">Packet Preview</h2>
+            
+            <div class="preview-container" id="previewContainer">
+              <div class="preview-header">
+                <span>📄 Eviction Packet.pdf</span>
+                <span style="color: var(--text-secondary);">12 pages</span>
+              </div>
+              <div class="preview-body">
+                <h3 style="margin-top: 0; font-size: 16px;">Contents</h3>
+                <ol style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.8;">
+                  <li>Property & Tenant Information</li>
+                  <li>Lease Agreement (Executed)</li>
+                  <li>Rent Payment History</li>
+                  <li>Outstanding Balance Report</li>
+                  <li>Notice Documentation</li>
+                  <li>Legal Proceedings Checklist</li>
+                </ol>
+                <div class="watermark">CONFIDENTIAL<br>ATTORNEY ONLY</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Log -->
+          <div class="section">
+            <h2 class="section-title">Activity Log</h2>
+            
+            <div class="activity-log" id="activityLog">
+              <div class="activity-item">
+                <span class="activity-time">Today, 2:58 PM</span>
+                <span class="activity-text">Eviction packet page accessed</span>
+              </div>
+              <div class="activity-item">
+                <span class="activity-time">Jan 3, 2026</span>
+                <span class="activity-text">Rent payment missed (December)</span>
+              </div>
+              <div class="activity-item">
+                <span class="activity-time">Dec 3, 2025</span>
+                <span class="activity-text">Rent payment missed (November)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help Section -->
+      <div class="help-section">
+        <h3 class="help-title">Need help with the eviction process?</h3>
+        <p class="help-text">
+          Our team can guide you through the eviction process and connect you with qualified attorneys in your area.
+        </p>
+        <button class="contact-button">Contact Us</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- SSN Modal -->
+  <div class="modal-backdrop" id="ssnModal">
+    <div class="modal">
+      <h2 class="modal-header">Request Partial SSN</h2>
+      
+      <div class="modal-content">
+        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">
+          The last 4 digits of the tenant's SSN will be included in the eviction packet for court filing purposes. This sensitive data is never displayed on screen.
+        </p>
+        
+        <div class="form-group">
+          <label class="form-label">Purpose for Request</label>
+          <select class="form-select" id="ssnPurpose">
+            <option value="">Select reason...</option>
+            <option>Required for court eviction filing</option>
+            <option>Requested by eviction attorney</option>
+            <option>Court summons requirement</option>
+            <option>Other legal requirement</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Additional Context (Optional)</label>
+          <textarea class="form-textarea" id="ssnContext" rows="3" placeholder="e.g., Attorney Jane Smith requested for filing in Travis County Court"></textarea>
+        </div>
+        
+        <div class="form-checkbox">
+          <input type="checkbox" id="ssnConsent">
+          <label for="ssnConsent" style="margin: 0;">
+            I understand this sensitive data is for authorized legal purposes only and all access will be logged
+          </label>
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="action-button secondary" onclick="closeSSNModal()">Cancel</button>
+        <button class="action-button" onclick="requestSSN()">Request & Regenerate Packet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Modal -->
+  <div class="modal-backdrop" id="shareModal">
+    <div class="modal">
+      <h2 class="modal-header">Share with Attorney</h2>
+      
+      <div class="modal-content">
+        <div class="form-group">
+          <label class="form-label">Attorney Name</label>
+          <input type="text" class="form-input" id="attorneyName" placeholder="John Smith">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Law Firm</label>
+          <input type="text" class="form-input" id="lawFirm" placeholder="Smith & Associates">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" id="attorneyEmail" placeholder="john@smithlaw.com">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Purpose</label>
+          <select class="form-select" id="sharePurpose">
+            <option value="">Select purpose...</option>
+            <option>Eviction filing</option>
+            <option>Legal consultation</option>
+            <option>Demand letter</option>
+            <option>Court preparation</option>
+          </select>
+        </div>
+        
+        <div class="form-checkbox">
+          <input type="checkbox" id="shareConsent">
+          <label for="shareConsent" style="margin: 0;">
+            I authorize sharing this confidential information with the specified attorney
+          </label>
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="action-button secondary" onclick="closeModal()">Cancel</button>
+        <button class="action-button" onclick="createShareLink()">Create Secure Link</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let shareActive = false;
+    let shareExpiry = null;
+    let shareTimer = null;
+    let ssnRequested = false;
+
+    // Utility functions
+    function addActivity(message) {
+      const log = document.getElementById('activityLog');
+      const item = document.createElement('div');
+      item.className = 'activity-item';
+      
+      const now = new Date();
+      const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      
+      item.innerHTML = `
+        <span class="activity-time">Today, ${time}</span>
+        <span class="activity-text">${message}</span>
+      `;
+      
+      log.insertBefore(item, log.firstChild);
+    }
+
+    // Download packet
+    function downloadPacket() {
+      const btn = document.getElementById('downloadBtn');
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
+      
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = 'Download Eviction Packet';
+        
+        const ssnNote = ssnRequested ? ' (includes SSN last-4)' : '';
+        addActivity('Eviction packet downloaded' + ssnNote);
+        
+        // Update last generated
+        const parent = btn.parentElement;
+        const lastGen = parent.querySelector('p:last-child');
+        lastGen.innerHTML = `Last generated: Today at ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+        
+        // Simulate download
+        const a = document.createElement('a');
+        a.href = '#';
+        a.download = 'eviction-packet.pdf';
+        a.click();
+      }, 1500);
+    }
+
+    // SSN Modal functions
+    function openSSNModal() {
+      document.getElementById('ssnModal').style.display = 'flex';
+    }
+
+    function closeSSNModal() {
+      document.getElementById('ssnModal').style.display = 'none';
+      // Clear form
+      document.getElementById('ssnPurpose').value = '';
+      document.getElementById('ssnContext').value = '';
+      document.getElementById('ssnConsent').checked = false;
+    }
+
+    function requestSSN() {
+      const purpose = document.getElementById('ssnPurpose').value;
+      const consent = document.getElementById('ssnConsent').checked;
+      
+      if (!purpose || !consent) {
+        alert('Please select a purpose and provide consent');
+        return;
+      }
+      
+      ssnRequested = true;
+      addActivity(`SSN last-4 requested (${purpose})`);
+      
+      // Update the document checklist to show SSN included
+      const checklist = document.querySelector('.document-list');
+      if (!document.getElementById('ssnListItem')) {
+        const ssnItem = document.createElement('li');
+        ssnItem.id = 'ssnListItem';
+        ssnItem.className = 'document-item';
+        ssnItem.innerHTML = `
+          <div class="document-info">
+            <div class="document-icon complete">🔒</div>
+            <div>
+              <div class="document-name">SSN Last-4</div>
+              <div class="document-status">Included for court filing</div>
+            </div>
+          </div>
+          <span style="color: #999; font-size: 14px;">Secured</span>
+        `;
+        checklist.appendChild(ssnItem);
+      }
+      
+      closeSSNModal();
+      alert('Packet will be regenerated with SSN last-4 included');
+    }
+
+    // Share modal
+    function openShareModal() {
+      document.getElementById('shareModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('shareModal').style.display = 'none';
+    }
+
+    function createShareLink() {
+      const name = document.getElementById('attorneyName').value;
+      const email = document.getElementById('attorneyEmail').value;
+      const purpose = document.getElementById('sharePurpose').value;
+      const consent = document.getElementById('shareConsent').checked;
+      
+      if (!name || !email || !purpose || !consent) {
+        alert('Please complete all fields and provide consent');
+        return;
+      }
+      
+      // Generate link
+      const token = Math.random().toString(36).substr(2, 16);
+      const link = `https://portal.nomadlease.com/share/${token}`;
+      
+      // Update UI
+      document.getElementById('shareState').style.display = 'block';
+      document.getElementById('shareLink').textContent = link;
+      document.getElementById('previewContainer').classList.add('watermarked');
+      
+      // Start timer
+      shareActive = true;
+      shareExpiry = Date.now() + (48 * 60 * 60 * 1000);
+      startShareTimer();
+      
+      addActivity(`Shared with attorney: ${name} (${email})`);
+      closeModal();
+    }
+
+    function startShareTimer() {
+      if (shareTimer) clearInterval(shareTimer);
+      
+      shareTimer = setInterval(() => {
+        if (!shareActive) {
+          clearInterval(shareTimer);
+          return;
+        }
+        
+        const remaining = shareExpiry - Date.now();
+        if (remaining <= 0) {
+          revokeAccess();
+          return;
+        }
+        
+        const hours = Math.floor(remaining / (60 * 60 * 1000));
+        const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+        const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
+        
+        document.getElementById('shareTimer').textContent = 
+          `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    function copyLink() {
+      const link = document.getElementById('shareLink').textContent;
+      navigator.clipboard.writeText(link).then(() => {
+        addActivity('Share link copied to clipboard');
+      });
+    }
+
+    function revokeAccess() {
+      shareActive = false;
+      clearInterval(shareTimer);
+      
+      document.getElementById('shareState').style.display = 'none';
+      document.getElementById('previewContainer').classList.remove('watermarked');
+      
+      addActivity('Attorney access revoked');
+    }
+
+    // Close modal on backdrop click
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal-backdrop')) {
+        event.target.style.display = 'none';
+      }
+    };
+  </script>
+</body>
+</html>

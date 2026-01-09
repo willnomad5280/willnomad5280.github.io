@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nomad Product Demos</title>
+  <style>
+    :root {
+      --nomad-green: #16a085;
+      --nomad-green-dark: #0e6655;
+      --bg-light: #f8fafb;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b7280;
+      --border-light: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--nomad-green);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 32px;
+    }
+
+    .demo-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .demo-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    }
+
+    .demo-image {
+      width: 100%;
+      height: 250px;
+      background: var(--nomad-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      color: white;
+    }
+
+    .demo-content {
+      padding: 32px;
+    }
+
+    .demo-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .demo-description {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .demo-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--nomad-green);
+      color: white;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--nomad-green);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">NOMAD</div>
+    <h1>Product Demos & Features</h1>
+    <p class="subtitle">Explore our latest innovations in property management technology</p>
+
+    <div class="demo-grid">
+      <a href="index.html" class="demo-card">
+        <div class="demo-image">💰</div>
+        <div class="demo-content">
+          <h2 class="demo-title">AI-Powered Financial Intelligence</h2>
+          <p class="demo-description">
+            Revolutionary accounting and banking platform with predictive analytics, market comparisons, and AI-driven revenue optimization suggestions.
+          </p>
+          <span class="demo-badge">New Launch</span>
+        </div>
+      </a>
+
+      <a href="eviction-packet.html" class="demo-card">
+        <div class="demo-image">📄</div>
+        <div class="demo-content">
+          <h2 class="demo-title">Eviction Packet Generator</h2>
+          <p class="demo-description">
+            Streamlined eviction documentation system with attorney sharing, sensitive data protection, and automated compliance checking.
+          </p>
+          <span class="demo-badge">Portal Feature</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nomad AI Financial Intelligence - The Future of Property Management</title>
+  <style>
+    :root {
+      --nomad-green: #16a085;
+      --nomad-green-dark: #0e6655;
+      --nomad-green-light: #1abc9c;
+      --bg-light: #f8fafb;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b7280;
+      --border-light: #e5e7eb;
+      --success-green: #10b981;
+      --warning-yellow: #f59e0b;
+      --error-red: #ef4444;
+      --chart-purple: #8b5cf6;
+      --chart-purple-light: #c4b5fd;
+      --ai-blue: #3b82f6;
+      --ai-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #ffffff;
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    nav {
+      background: white;
+      border-bottom: 1px solid var(--border-light);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.95);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--nomad-green);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ai-badge {
+      background: var(--ai-gradient);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--nomad-green);
+    }
+
+    .cta-button {
+      background: var(--nomad-green);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .cta-button:hover::before {
+      left: 100%;
+    }
+
+    .cta-button:hover {
+      background: var(--nomad-green-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(22, 160, 133, 0.3);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 140px 24px 80px;
+      text-align: center;
+      background: linear-gradient(135deg, #f8fafb 0%, #ffffff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 20% 80%, rgba(22, 160, 133, 0.05) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+      animation: float 25s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      33% { transform: translateY(-30px) rotate(1deg); }
+      66% { transform: translateY(-15px) rotate(-1deg); }
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .announcement-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--ai-gradient);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      animation: pulse 2s ease-in-out infinite;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); }
+      50% { transform: scale(1.05); box-shadow: 0 6px 30px rgba(59, 130, 246, 0.4); }
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--nomad-green) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 24px;
+      line-height: 1.1;
+    }
+
+    .hero-subtitle {
+      font-size: 24px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      font-weight: 400;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      margin-top: 40px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--nomad-green);
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Main Dashboard */
+    .dashboard-section {
+      max-width: 1400px;
+      margin: 60px auto 0;
+      padding: 0 24px;
+      position: relative;
+    }
+
+    .laptop-frame {
+      background: #1f2937;
+      border-radius: 16px 16px 8px 8px;
+      padding: 16px 16px 12px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.2);
+      transform: perspective(1500px) rotateX(5deg);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .laptop-frame:hover {
+      transform: perspective(1500px) rotateX(0deg) translateY(-10px);
+      box-shadow: 0 50px 100px rgba(0,0,0,0.25);
+    }
+
+    .laptop-screen {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .dashboard-header {
+      background: var(--bg-light);
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .property-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .property-selector:hover {
+      border-color: var(--nomad-green);
+    }
+
+    .ai-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--ai-gradient);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ai-toggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+    }
+
+    /* AI Insights Panel */
+    .ai-insights-panel {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-bottom: 1px solid #bfdbfe;
+      padding: 20px 24px;
+      display: flex;
+      gap: 20px;
+      align-items: stretch;
+      animation: slideDown 0.5s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .ai-insight-card {
+      flex: 1;
+      background: white;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .ai-insight-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+    }
+
+    .insight-priority {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--error-red);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 0 12px 0 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .insight-priority.medium {
+      background: var(--warning-yellow);
+    }
+
+    .insight-priority.low {
+      background: var(--ai-blue);
+    }
+
+    .insight-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .insight-description {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .insight-impact {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--success-green);
+    }
+
+    .insight-action {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .action-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--ai-blue);
+      color: white;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .action-button:hover {
+      background: #2563eb;
+      transform: translateX(2px);
+    }
+
+    /* Main Dashboard Grid */
+    .dashboard-content {
+      padding: 24px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .metric-card:hover {
+      border-color: var(--nomad-green);
+      box-shadow: 0 4px 12px rgba(22, 160, 133, 0.1);
+    }
+
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .metric-info {
+      flex: 1;
+    }
+
+    .metric-title {
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .metric-comparison {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .metric-trend {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+
+    .trend-up {
+      color: var(--success-green);
+    }
+
+    .trend-down {
+      color: var(--error-red);
+    }
+
+    .vs-market {
+      color: var(--text-secondary);
+    }
+
+    .market-value {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* Revenue Optimization Chart */
+    .revenue-chart {
+      grid-column: span 1;
+      height: 300px;
+      position: relative;
+    }
+
+    .chart-canvas {
+      width: 100%;
+      height: 240px;
+      position: relative;
+      background: var(--bg-light);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      height: 180px;
+      gap: 12px;
+    }
+
+    .bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bar-container {
+      width: 100%;
+      display: flex;
+      gap: 4px;
+      align-items: flex-end;
+      height: 160px;
+    }
+
+    .bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      transition: all 0.3s;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .bar:hover {
+      opacity: 0.8;
+    }
+
+    .bar.current {
+      background: var(--chart-purple);
+    }
+
+    .bar.optimized {
+      background: var(--success-green);
+    }
+
+    .bar-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .bar-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text-primary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      margin-bottom: 4px;
+    }
+
+    .bar:hover .bar-tooltip {
+      opacity: 1;
+    }
+
+    /* Market Comparison Grid */
+    .comparison-grid {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .comparison-card {
+      background: var(--bg-light);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .comparison-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .comparison-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .comparison-badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .comparison-badge.above {
+      background: #d1fae5;
+      color: var(--success-green);
+    }
+
+    .comparison-badge.below {
+      background: #fee2e2;
+      color: var(--error-red);
+    }
+
+    .comp-properties {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .comp-property {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .comp-property:hover {
+      border-color: var(--nomad-green);
+    }
+
+    .comp-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .comp-distance {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .comp-price {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* Advanced Analytics Section */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .analytics-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .analytics-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .analytics-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      background: var(--nomad-green-light);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .analytics-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .analytics-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Features Grid */
+    .features {
+      padding: 100px 24px;
+      background: var(--bg-light);
+    }
+
+    .features-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .features h2 {
+      font-size: 48px;
+      text-align: center;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+    }
+
+    .features-subtitle {
+      text-align: center;
+      font-size: 20px;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto 60px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid var(--border-light);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+      border-color: var(--nomad-green);
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 20px;
+      background: var(--ai-gradient);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: white;
+    }
+
+    .feature-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .feature-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 100px 24px;
+      background: var(--ai-gradient);
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="white" opacity="0.1"/><circle cx="80" cy="80" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/><circle cx="30" cy="70" r="1" fill="white" opacity="0.1"/><circle cx="70" cy="30" r="1" fill="white" opacity="0.1"/></svg>') repeat;
+      background-size: 100px 100px;
+      animation: drift 20s linear infinite;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0); }
+      to { transform: translate(100px, 100px); }
+    }
+
+    .cta-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section h2 {
+      font-size: 48px;
+      margin-bottom: 24px;
+      font-weight: 700;
+    }
+
+    .cta-section p {
+      font-size: 20px;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .cta-button-white {
+      background: white;
+      color: var(--ai-blue);
+      padding: 16px 48px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 18px;
+      display: inline-block;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 1024px) {
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .analytics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .hero-subtitle {
+        font-size: 18px;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .ai-insights-panel {
+        flex-direction: column;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Loading Animation */
+    .loading-pulse {
+      animation: loadingPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes loadingPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Sparkle Animation */
+    .sparkle {
+      position: relative;
+    }
+
+    .sparkle::after {
+      content: '✨';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+      50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="logo">
+        NOMAD
+        <span class="ai-badge">AI</span>
+      </a>
+      <div class="nav-links">
+        <a href="#" class="nav-link">Features</a>
+        <a href="#" class="nav-link">Analytics</a>
+        <a href="#" class="nav-link">Pricing</a>
+        <a href="#" class="nav-link">Resources</a>
+        <a href="#" class="nav-link">Login</a>
+        <a href="#" class="cta-button">Start Free Trial</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="announcement-badge sparkle">
+        🚀 GROUNDBREAKING LAUNCH
+      </div>
+      <h1>AI-Powered Financial Intelligence<br>for Modern Property Owners</h1>
+      <p class="hero-subtitle">
+        The only platform that combines real-time market data, predictive analytics, and AI optimization to maximize your rental income. Turn data into dollars.
+      </p>
+      
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">$2.4M+</div>
+          <div class="stat-label">Additional Revenue Generated</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">18.5%</div>
+          <div class="stat-label">Avg Income Increase</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">50K+</div>
+          <div class="stat-label">Properties Analyzed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Preview -->
+    <div class="dashboard-section">
+      <div class="laptop-frame">
+        <div class="laptop-screen">
+          <!-- Dashboard Header -->
+          <div class="dashboard-header">
+            <div class="header-left">
+              <div class="property-selector">
+                🏠 <span>456 Maple Ave, Austin TX</span> ⌄
+              </div>
+            </div>
+            <div class="ai-toggle">
+              <span>✨</span>
+              <span>AI Insights On</span>
+            </div>
+          </div>
+
+          <!-- AI Insights Panel -->
+          <div class="ai-insights-panel">
+            <div class="ai-insight-card">
+              <div class="insight-priority">High Impact</div>
+              <div class="insight-title">📈 Pricing Optimization Opportunity</div>
+              <div class="insight-description">
+                Your property is underpriced by 12% compared to similar 3-bed homes within 0.5 miles. Recent comps show average rent of $2,850/mo.
+              </div>
+              <div class="insight-impact">
+                +$3,600/year potential
+              </div>
+              <div class="insight-action">
+                <a href="#" class="action-button">View Analysis →</a>
+              </div>
+            </div>
+
+            <div class="ai-insight-card">
+              <div class="insight-priority medium">Medium Impact</div>
+              <div class="insight-title">🛠️ Maintenance Cost Reduction</div>
+              <div class="insight-description">
+                Your HVAC expenses are 35% higher than average. Switching to preventive maintenance could save $1,200 annually.
+              </div>
+              <div class="insight-impact">
+                -$1,200/year expenses
+              </div>
+              <div class="insight-action">
+                <a href="#" class="action-button">Get Quotes →</a>
+              </div>
+            </div>
+
+            <div class="ai-insight-card">
+              <div class="insight-priority low">Opportunity</div>
+              <div class="insight-title">💰 Tax Optimization Alert</div>
+              <div class="insight-description">
+                You may be missing $2,400 in deductions. Our analysis found unclaimed depreciation and maintenance expenses.
+              </div>
+              <div class="insight-impact">
+                -$2,400 tax savings
+              </div>
+              <div class="insight-action">
+                <a href="#" class="action-button">Review Details →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Dashboard Content -->
+          <div class="dashboard-content">
+            <!-- Top Metrics -->
+            <div class="metrics-grid">
+              <!-- Revenue Optimization Chart -->
+              <div class="metric-card revenue-chart">
+                <div class="metric-header">
+                  <div class="metric-info">
+                    <div class="metric-title">Revenue Optimization Potential</div>
+                    <div class="metric-value">$38,400</div>
+                    <div class="metric-comparison">
+                      <div class="metric-trend trend-up">↑ +18.5%</div>
+                      <span class="vs-market">possible increase</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="chart-canvas">
+                  <div class="chart-bars">
+                    <div class="bar-group">
+                      <div class="bar-container">
+                        <div class="bar current" style="height: 70%">
+                          <span class="bar-tooltip">Current: $2,550/mo</span>
+                        </div>
+                        <div class="bar optimized" style="height: 85%">
+                          <span class="bar-tooltip">Optimized: $2,950/mo</span>
+                        </div>
+                      </div>
+                      <div class="bar-label">Your Property</div>
+                    </div>
+                    <div class="bar-group">
+                      <div class="bar-container">
+                        <div class="bar current" style="height: 82%">
+                          <span class="bar-tooltip">Market Avg: $2,875/mo</span>
+                        </div>
+                      </div>
+                      <div class="bar-label">Market Average</div>
+                    </div>
+                    <div class="bar-group">
+                      <div class="bar-container">
+                        <div class="bar optimized" style="height: 90%">
+                          <span class="bar-tooltip">Top 10%: $3,150/mo</span>
+                        </div>
+                      </div>
+                      <div class="bar-label">Top Performers</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Net Operating Income -->
+              <div class="metric-card">
+                <div class="metric-header">
+                  <div class="metric-info">
+                    <div class="metric-title">Net Operating Income</div>
+                    <div class="metric-value">$28,650</div>
+                    <div class="metric-comparison">
+                      <div class="metric-trend trend-up">↑ 12.3%</div>
+                      <span class="vs-market">vs last year</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                  <div style="font-size: 48px;">📊</div>
+                  <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">
+                    Outperforming 78% of similar properties
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cash-on-Cash Return -->
+              <div class="metric-card">
+                <div class="metric-header">
+                  <div class="metric-info">
+                    <div class="metric-title">Cash-on-Cash Return</div>
+                    <div class="metric-value">8.7%</div>
+                    <div class="metric-comparison">
+                      <div class="metric-trend trend-up">↑ 0.8%</div>
+                      <span class="vs-market">vs market <span class="market-value">7.2%</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                  <div style="font-size: 48px;">💰</div>
+                  <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">
+                    Top 15% in your market
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Market Comparison -->
+            <div class="comparison-grid">
+              <div class="comparison-card">
+                <div class="comparison-header">
+                  <div class="comparison-title">📍 Nearby Comparables</div>
+                  <div class="comparison-badge above">Above Market</div>
+                </div>
+                <div class="comp-properties">
+                  <div class="comp-property">
+                    <div class="comp-info">
+                      <span>🏠</span>
+                      <div>
+                        <div style="font-weight: 600;">789 Oak Street</div>
+                        <div class="comp-distance">0.3 miles • 3 bed 2 bath</div>
+                      </div>
+                    </div>
+                    <div class="comp-price">$2,875/mo</div>
+                  </div>
+                  <div class="comp-property">
+                    <div class="comp-info">
+                      <span>🏠</span>
+                      <div>
+                        <div style="font-weight: 600;">321 Elm Avenue</div>
+                        <div class="comp-distance">0.5 miles • 3 bed 2.5 bath</div>
+                      </div>
+                    </div>
+                    <div class="comp-price">$2,950/mo</div>
+                  </div>
+                  <div class="comp-property">
+                    <div class="comp-info">
+                      <span>🏠</span>
+                      <div>
+                        <div style="font-weight: 600;">654 Pine Road</div>
+                        <div class="comp-distance">0.4 miles • 3 bed 2 bath</div>
+                      </div>
+                    </div>
+                    <div class="comp-price">$2,825/mo</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="comparison-card">
+                <div class="comparison-header">
+                  <div class="comparison-title">🎯 Performance Metrics</div>
+                  <div class="comparison-badge above">Top Quartile</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                  <div style="text-align: center; padding: 16px; background: white; border-radius: 8px;">
+                    <div style="font-size: 24px; font-weight: 700; color: var(--nomad-green);">96%</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Occupancy Rate</div>
+                  </div>
+                  <div style="text-align: center; padding: 16px; background: white; border-radius: 8px;">
+                    <div style="font-size: 24px; font-weight: 700; color: var(--nomad-green);">4.8</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Tenant Score</div>
+                  </div>
+                  <div style="text-align: center; padding: 16px; background: white; border-radius: 8px;">
+                    <div style="font-size: 24px; font-weight: 700; color: var(--nomad-green);">18mo</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Avg Tenure</div>
+                  </div>
+                  <div style="text-align: center; padding: 16px; background: white; border-radius: 8px;">
+                    <div style="font-size: 24px; font-weight: 700; color: var(--nomad-green);">$142</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Cost per Sq Ft</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Advanced Analytics -->
+            <div class="analytics-grid">
+              <div class="analytics-card">
+                <div class="analytics-icon">🔮</div>
+                <div class="analytics-value">$485K</div>
+                <div class="analytics-label">Predicted Value (2027)</div>
+              </div>
+              <div class="analytics-card">
+                <div class="analytics-icon">📈</div>
+                <div class="analytics-value">14.2%</div>
+                <div class="analytics-label">5-Year Appreciation</div>
+              </div>
+              <div class="analytics-card">
+                <div class="analytics-icon">⚡</div>
+                <div class="analytics-value">A+</div>
+                <div class="analytics-label">Market Health Score</div>
+              </div>
+              <div class="analytics-card">
+                <div class="analytics-icon">🎯</div>
+                <div class="analytics-value">92/100</div>
+                <div class="analytics-label">Investment Score</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="features-container">
+      <h2>Intelligence That Pays For Itself</h2>
+      <p class="features-subtitle">
+        Our AI analyzes millions of data points to deliver actionable insights that directly impact your bottom line
+      </p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <h3 class="feature-title">Predictive Analytics</h3>
+          <p class="feature-description">
+            Forecast market trends, rental demand, and property values with 94% accuracy using machine learning models trained on 10M+ transactions.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💡</div>
+          <h3 class="feature-title">Revenue Optimization</h3>
+          <p class="feature-description">
+            Dynamic pricing recommendations based on seasonality, local events, and market conditions. Average 18.5% revenue increase.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">Expense Intelligence</h3>
+          <p class="feature-description">
+            Identify cost-saving opportunities by comparing your expenses to similar properties. Reduce operating costs by up to 25%.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Market Benchmarking</h3>
+          <p class="feature-description">
+            Real-time comparison with 50K+ properties. Know exactly where you stand and what improvements will have the biggest impact.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🏦</div>
+          <h3 class="feature-title">Smart Banking</h3>
+          <p class="feature-description">
+            Dedicated property accounts with automated categorization, tax optimization, and cash flow forecasting.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <h3 class="feature-title">Portfolio Analysis</h3>
+          <p class="feature-description">
+            Evaluate performance across all properties. Identify top performers and properties needing attention.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3 class="feature-title">AI Recommendations</h3>
+          <p class="feature-description">
+            Get personalized action plans for each property. From maintenance timing to tenant screening improvements.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3 class="feature-title">Risk Assessment</div>
+          <p class="feature-description">
+            Predict maintenance issues, tenant turnover, and market downturns before they impact your income.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Join the AI Revolution in Property Management</h2>
+      <p>See how much additional revenue your properties could generate with Nomad AI</p>
+      <a href="#" class="cta-button-white">Get Your Free Property Analysis</a>
+    </div>
+  </section>
+
+  <script>
+    // Animate numbers on scroll
+    const animateValue = (element, start, end, duration) => {
+      const startTimestamp = Date.now();
+      const step = (timestamp) => {
+        const progress = Math.min((Date.now() - startTimestamp) / duration, 1);
+        const value = Math.floor(progress * (end - start) + start);
+        
+        if (element.dataset.format === 'currency') {
+          element.textContent = '$' + value.toLocaleString();
+        } else if (element.dataset.format === 'percent') {
+          element.textContent = value + '%';
+        } else {
+          element.textContent = value.toLocaleString();
+        }
+        
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
+    };
+
+    // Intersection Observer for animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Animate metric values
+          if (entry.target.classList.contains('metric-value')) {
+            const value = parseInt(entry.target.textContent.replace(/\D/g, ''));
+            animateValue(entry.target, 0, value, 2000);
+          }
+          
+          // Fade in cards
+          if (entry.target.classList.contains('feature-card')) {
+            entry.target.style.animation = 'fadeIn 0.6s ease-out forwards';
+          }
+          
+          // Slide up analytics
+          if (entry.target.classList.contains('analytics-card')) {
+            entry.target.style.animation = 'slideUp 0.6s ease-out forwards';
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+
+    // Observe elements
+    document.querySelectorAll('.metric-value, .feature-card, .analytics-card').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Interactive chart bars
+    document.querySelectorAll('.bar').forEach(bar => {
+      bar.addEventListener('mouseenter', function() {
+        this.style.transform = 'scaleY(1.05)';
+      });
+      
+      bar.addEventListener('mouseleave', function() {
+        this.style.transform = 'scaleY(1)';
+      });
+    });
+
+    // AI Toggle Animation
+    const aiToggle = document.querySelector('.ai-toggle');
+    if (aiToggle) {
+      aiToggle.addEventListener('click', function() {
+        const panel = document.querySelector('.ai-insights-panel');
+        if (panel.style.display === 'none') {
+          panel.style.display = 'flex';
+          panel.style.animation = 'slideDown 0.5s ease-out';
+          this.style.background = 'var(--ai-gradient)';
+        } else {
+          panel.style.display = 'none';
+          this.style.background = '#e5e7eb';
+          this.style.color = 'var(--text-primary)';
+        }
+      });
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Dynamic loading animation
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.loading-pulse').forEach(el => {
+        setTimeout(() => {
+          el.classList.remove('loading-pulse');
+        }, 1500);
+      });
+    });
+
+    // Hover effects for insight cards
+    document.querySelectorAll('.ai-insight-card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-4px) scale(1.02)';
+        this.style.boxShadow = '0 12px 32px rgba(59, 130, 246, 0.2)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+        this.style.boxShadow = 'none';
+      });
+    });
+
+    // Sparkle effect
+    setInterval(() => {
+      document.querySelectorAll('.sparkle').forEach(el => {
+        el.style.animation = 'none';
+        setTimeout(() => {
+          el.style.animation = 'sparkle 2s ease-in-out';
+        }, 100);
+      });
+    }, 5000);
+  </script>
+</body>
+</html>
